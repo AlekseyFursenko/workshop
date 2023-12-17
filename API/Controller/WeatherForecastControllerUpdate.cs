@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controller
 {
-  public class WeatherForecastController : BaseControllerApp
+  public class WeatherForecastControllerUpdate : BaseControllerApp
   {
 
     string[] summaries = new[]
@@ -15,7 +15,7 @@ namespace API.Controller
     };
 
     [HttpGet("GetCollectionWeatherForecast")]
-    public WeatherForecast[] GetCollectionWeatherForecast()
+    public IActionResult GetCollectionWeatherForecast()
     {
       var forecast = Enumerable.Range(1, 5).Select(index =>
        new WeatherForecast
@@ -25,13 +25,13 @@ namespace API.Controller
            summaries[Random.Shared.Next(summaries.Length)]
        ))
        .ToArray();
-      return forecast;
+      return Created("", forecast);
     }
 
-    [HttpGet("GetCollectionWeatherForecast/{count}")]
-    public WeatherForecast[] GetCollectionWeatherForecast(int count)
+    [HttpGet("GetCollectionWeatherForecast/{start}/{end}")]
+    public WeatherForecast[] GetCollectionWeatherForecast(int start = 0, int end = 2)
     {
-      var forecast = Enumerable.Range(1, count).Select(index =>
+      var forecast = Enumerable.Range(start, end).Select(index =>
        new WeatherForecast
        (
            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
