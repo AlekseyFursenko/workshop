@@ -96,3 +96,75 @@ JOIN
 
 -- -- -- SELECT count(*) FROM public."UserTelephones";
 ```
+
+
+
+# `IOC (Inversion of Control)`
+
+Это фреймворки или библиотеки, которые облегчают управление зависимостями в приложении. Они предоставляют механизмы для регистрации зависимостей и автоматического создания экземпляров этих зависимостей при их использовании. IOC контейнеры соблюдают принцип инверсии управления (IoC) и принцип внедрения зависимостей (DI), делая приложение более гибким и легко расширяемым.
+
+Основные функции IOC контейнера включают:
+
+- Регистрация зависимостей: Контейнер позволяет зарегистрировать типы и их реализации, указывая, какой интерфейс или абстрактный класс связан с каким конкретным классом.
+
+- Создание экземпляров: Контейнер автоматически создает экземпляры зарегистрированных классов и управляет их жизненным циклом.
+
+- Разрешение зависимостей: Когда код требует конкретную зависимость, контейнер создает и предоставляет экземпляр этой зависимости, учитывая зарегистрированные связи.
+
+- Управление жизненным циклом: Некоторые контейнеры позволяют настраивать жизненные циклы зависимостей, такие как Singleton, Transient и другие.
+
+Примеры популярных IOC контейнеров в .NET включают Unity, Autofac, StructureMap, Ninject, и Microsoft.Extensions.DependencyInjection (встроенный в ASP.NET). IOC контейнеры упрощают управление зависимостями и способствуют созданию более гибких и тестируемых приложений.
+
+Пример
+
+```C#
+public class IoCContainer
+{
+  private Dictionary<Type, Type> registeredTypes = new Dictionary<Type, Type>();
+
+  public void Register<TInterface, TImplementation>()
+  {
+    registeredTypes[typeof(TInterface)] = typeof(TImplementation);
+  }
+
+  public TInterface Resolve<TInterface>()
+  {
+    if (registeredTypes.ContainsKey(typeof(TInterface)))
+    {
+      Type implementationType = registeredTypes[typeof(TInterface)];
+      return (TInterface)Activator.CreateInstance(implementationType);
+    }
+    throw new InvalidOperationException($"Type {typeof(TInterface).Name} is not registered.");
+  }
+}
+
+public interface IService
+{
+  void Execute();
+}
+
+public class ServiceImplementation : IService
+{
+  public void Execute()
+  {
+    Console.WriteLine("ServiceImplementation is executing.");
+  }
+}
+
+public class AnotherServiceImplementation : IService
+{
+  public void Execute()
+  {
+    Console.WriteLine("AnotherServiceImplementation is executing.");
+  }
+}
+```
+
+```c#
+IoCContainer container = new IoCContainer();
+container.Register<IService, ServiceImplementation>();
+
+IService service = container.Resolve<IService>();
+
+service.Execute();
+```
