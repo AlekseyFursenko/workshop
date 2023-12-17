@@ -123,6 +123,7 @@ public class IoCContainer
   private Dictionary<Type, Type> registeredTypes = new Dictionary<Type, Type>();
 
   public void Register<TInterface, TImplementation>()
+  where TImplementation: TInterface, new()
   {
     registeredTypes[typeof(TInterface)] = typeof(TImplementation);
   }
