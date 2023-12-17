@@ -27,4 +27,15 @@ public class NumbersPairController : BaseControllerApp
     return Ok(res);
   }
 
+  [HttpGet(nameof(this.AnonymsData))]
+  public object AnonymsData()
+  {
+    var res = new
+    {
+      id = 123,
+      text = "cscs"
+    };
+    return res;
+  }
+
 }

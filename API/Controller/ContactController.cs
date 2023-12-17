@@ -51,7 +51,7 @@ namespace API.Controller
 
         await dataContext.Contacts.AddAsync(userContact);
         await dataContext.SaveChangesAsync();
-        return Ok("Append ok");
+        return Ok(userContact);
       }
       catch (Exception ex)
       {
